@@ -38,7 +38,7 @@ docker build -t backend-api:latest /home/ppelaez/plataforma-centralizada/backend
 docker build -t backend-websocket:latest /home/ppelaez/plataforma-centralizada/backend/websocket
 docker build -t backend-alerts:latest /home/ppelaez/plataforma-centralizada/backend/alerts
 
-docker build -t gateway-goodwe:latest /home/ppelaez/plataforma-centralizada/backend/gateways/goodwe
+docker build -t gateway-goodwe:latest /home/ppelaez/plataforma-centralizada/backend/gateways/goodwe-sems
 docker build -t gateway-t301:latest /home/ppelaez/plataforma-centralizada/backend/gateways/t301-tracking
 
 docker build -t openai-proxy:latest /home/ppelaez/plataforma-centralizada/backend/ia/openai-proxy
