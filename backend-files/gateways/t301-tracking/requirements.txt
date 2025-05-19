@@ -1,0 +1,4 @@
+# requirements.txt
+asyncpg
+redis
+python-dotenv

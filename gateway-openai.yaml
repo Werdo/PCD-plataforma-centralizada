@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openai-proxy
+  namespace: central-platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openai-proxy
+  template:
+    metadata:
+      labels:
+        app: openai-proxy
+    spec:
+      containers:
+        - name: openai-proxy
+          image: openai-proxy:latest
+          ports:
+            - containerPort: 8010
+          env:
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: openai-secret
+                  key: "KEY"
+            - name: OPENAI_MODEL
+              value: "gpt-3.5-turbo"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: openai-proxy-service
+  namespace: central-platform
+spec:
+  selector:
+    app: openai-proxy
+  ports:
+    - port: 8010
+      targetPort: 8010
+  type: ClusterIP
+

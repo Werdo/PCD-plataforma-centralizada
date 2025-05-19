@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: central-platform
+---
+# Puedes incluir aquí todos los bloques definidos previamente:
+# - frontend-facit
+# - frontend-fyr
+# - api-rest
+# - websocket
+# - alerts
+# - redis
+# - postgresql
+# - mongodb
+# - gateway-t301
+# - gateway-goodwe
+# - openai-proxy
+# - tools (passbolt, rustdesk)
+# - ingress
+#
+# Recomendado aplicar modularmente con ./scripts/03-sync-manifests.sh
+# o construir este archivo fusionando los manifiestos corregidos.
+#
+# Este bloque define el namespace base. Puedes seguir concatenando
+# los deployments y servicios validados según necesidad.
+

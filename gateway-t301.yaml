@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-t301
+  namespace: central-platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway-t301
+  template:
+    metadata:
+      labels:
+        app: gateway-t301
+    spec:
+      containers:
+        - name: gateway-t301
+          image: gateway-t301:latest
+          ports:
+            - containerPort: 9988
+          env:
+            - name: POSTGRES_HOST
+              value: "postgresql-service"
+            - name: POSTGRES_DB
+              value: "centraldb"
+            - name: POSTGRES_USER
+              value: "admin"
+            - name: POSTGRES_PASSWORD
+              value: "secret"
+            - name: REDIS_HOST
+              value: "redis-service"
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_CHANNEL
+              value: "platform-events"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-t301-service
+  namespace: central-platform
+spec:
+  selector:
+    app: gateway-t301
+  ports:
+    - port: 9988
+      targetPort: 9988
+  type: NodePort
+

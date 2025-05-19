@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-rest
+  namespace: central-platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-rest
+  template:
+    metadata:
+      labels:
+        app: api-rest
+    spec:
+      containers:
+        - name: api-rest
+          image: backend-api:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: POSTGRES_HOST
+              value: "postgresql-service"
+            - name: POSTGRES_DB
+              value: "centraldb"
+            - name: POSTGRES_USER
+              value: "admin"
+            - name: POSTGRES_PASSWORD
+              value: "secret"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-rest-service
+  namespace: central-platform
+spec:
+  selector:
+    app: api-rest
+  ports:
+    - port: 8000
+      targetPort: 8000
+  type: ClusterIP
+

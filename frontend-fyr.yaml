@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-fyr
+  namespace: central-platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend-fyr
+  template:
+    metadata:
+      labels:
+        app: frontend-fyr
+    spec:
+      containers:
+        - name: frontend-fyr
+          image: frontend-fyr:latest
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-fyr-service
+  namespace: central-platform
+spec:
+  selector:
+    app: frontend-fyr
+  ports:
+    - port: 80
+      targetPort: 80
+  type: ClusterIP
+
