@@ -35,6 +35,7 @@ Los manifiestos viven en:
 ```
 - Construye desde: `/backend/gateways/goodwe/`
 - Aplica: `/k8s/gateways/gateway-goodwe.yaml`
+- Requiere `Secret`: `secrets/gateway-goodwe-secret.yaml`
 
 ### 🔹 Proxy OpenAI (IA externa temporal)
 ```bash

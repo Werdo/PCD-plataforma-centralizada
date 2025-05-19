@@ -18,13 +18,9 @@ spec:
           image: gateway-goodwe:latest
           ports:
             - containerPort: 8001
-          env:
-            - name: SEMS_USER
-              value: "pedropelaezcatala@gmail.com"
-            - name: SEMS_PASS
-              value: "Goodwe2018"
-            - name: PLANT_ID
-              value: "95048ESU225W0194"
+          envFrom:
+            - secretRef:
+                name: gateway-goodwe-secret
 ---
 apiVersion: v1
 kind: Service

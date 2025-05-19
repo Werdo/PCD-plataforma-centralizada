@@ -28,27 +28,9 @@ spec:
       containers:
         - name: passbolt
           image: passbolt/passbolt:latest-ce
-          env:
-            - name: APP_FULL_BASE_URL
-              value: "http://passbolt.emiliomoro.local"
-            - name: DATASOURCES_DEFAULT_HOST
-              value: "postgresql-service"
-            - name: DATASOURCES_DEFAULT_USERNAME
-              value: "admin"
-            - name: DATASOURCES_DEFAULT_PASSWORD
-              value: "secret"
-            - name: DATASOURCES_DEFAULT_DATABASE
-              value: "centraldb"
-            - name: EMAIL_DEFAULT_FROM
-              value: "admin@yatelomiro.com"
-            - name: EMAIL_TRANSPORT_DEFAULT_HOST
-              value: "smtp.dondominio.com"
-            - name: EMAIL_TRANSPORT_DEFAULT_PORT
-              value: "587"
-            - name: EMAIL_TRANSPORT_DEFAULT_USERNAME
-              value: "admin@yatelomiro.com"
-            - name: EMAIL_TRANSPORT_DEFAULT_PASSWORD
-              value: "p15d)mYS528(rU"
+          envFrom:
+            - secretRef:
+                name: passbolt-rustdesk-secret
           ports:
             - containerPort: 80
           volumeMounts:
