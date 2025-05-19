@@ -12,7 +12,7 @@ echo "===================== 🧪 DASHBOARD DE SALUD ====================="
 # Frontend -> Backend
 echo -e "\n🔌 Verificando conectividad desde los frontends hacia API y WebSocket..."
 
-for POD in $(kubectl get pods -n "$NAMESPACE" -l app in (frontend-facit,frontend-fyr) -o name); do
+for POD in $(kubectl get pods -n "$NAMESPACE" -l 'app in (frontend-facit,frontend-fyr)' -o name); do
   echo "👉 Pod: $POD"
   kubectl exec -n "$NAMESPACE" "$POD" -- apk add --no-cache curl >/dev/null 2>&1 || true
   echo -n " - HTTP API: "
@@ -25,7 +25,7 @@ done
 # Backend -> Bases de datos
 echo -e "\n💾 Verificando conectividad desde backend a Redis, PostgreSQL y MongoDB..."
 
-for POD in $(kubectl get pods -n "$NAMESPACE" -l app in (api-rest,websocket,alerts) -o name); do
+for POD in $(kubectl get pods -n "$NAMESPACE" -l 'app in (api-rest,websocket,alerts)' -o name); do
   echo "👉 Pod: $POD"
   kubectl exec -n "$NAMESPACE" "$POD" -- apk add --no-cache redis-tools postgresql-client mongodb-tools >/dev/null 2>&1 || true
 
