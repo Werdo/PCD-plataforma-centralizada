@@ -26,8 +26,7 @@ Contiene los manifiestos que despliegan:
 - Ingress: `http://passbolt.emiliomoro.local`
 
 ### Configuración
-- Variables de entorno definidas directamente en el deployment
-- Pendiente: uso de `ConfigMap` y `Secrets`
+- Las variables de entorno se cargan desde un `Secret`
 
 ---
 
@@ -65,6 +64,14 @@ Contiene los manifiestos que despliegan:
 ```
 
 Manifiesto: `k8s/tools/passbolt-rustdesk.yaml`
+
+### Secrets requeridos
+Edita los archivos en `secrets/` con tus credenciales y aplícalos antes del despliegue:
+
+```bash
+kubectl apply -f secrets/gateway-goodwe-secret.yaml
+kubectl apply -f secrets/passbolt-rustdesk-secret.yaml
+```
 
 ---
 
