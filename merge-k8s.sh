@@ -19,7 +19,7 @@ EOF
 echo -e "\n---" >> "$OUTPUT"
 
 # Fusionar manifiestos por categoría
-for DIR in frontend/backend gateways ia tools ingress databases; do
+for DIR in frontend/admin frontend/app backend gateways ia tools ingress databases; do
   SUBDIR="$BASE/$DIR"
   if [ -d "$SUBDIR" ]; then
     echo "📁 Añadiendo manifiestos desde: $SUBDIR"
