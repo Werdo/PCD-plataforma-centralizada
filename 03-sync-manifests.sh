@@ -67,11 +67,15 @@ for CATEGORY in frontend backend gateways ia tools ingress databases; do
   SUBDIR="$DST_DIR/$CATEGORY"
   if [ -d "$SUBDIR" ]; then
     echo "📂 Procesando: $CATEGORY"
-    for FILE in "$SUBDIR"/*.yaml; do
-      [ -f "$FILE" ] || continue
-      echo "   ↪ Aplicando: $(basename "$FILE")"
-      kubectl apply -f "$FILE" || echo "❌ Error aplicando $FILE"
-    done
+    FILES=$(find "$SUBDIR" -type f -name '*.yaml')
+    if [ -z "$FILES" ]; then
+      echo "   ⚠️  No se encontraron manifiestos en $SUBDIR"
+    else
+      for FILE in $FILES; do
+        echo "   ↪ Aplicando: $(basename "$FILE")"
+        kubectl apply -f "$FILE" || echo "❌ Error aplicando $FILE"
+      done
+    fi
   fi
   echo ""
 done
