@@ -1,24 +1,31 @@
 #!/bin/bash
 
 # Script: 06-build-backend.sh
-# Construye imágenes Docker del backend de la plataforma (servicios core)
+# Construye todas las imágenes Docker necesarias para la plataforma
 
 set -e
 
-BASE_DIR="/home/ppelaez/plataforma-centralizada/backend"
+BASE_DIR="/home/ppelaez/plataforma-centralizada"
+
+# Mapa de carpetas relativas → nombre de imagen
 declare -A SERVICES=(
-  ["api-rest"]="backend-api:latest"
-  ["websocket"]="backend-websocket:latest"
-  ["alerts"]="backend-alerts:latest"
+  ["frontend/admin"]="frontend:latest"
+  ["frontend/app"]="frontend-fyr:latest"
+  ["backend/api-rest"]="backend-api:latest"
+  ["backend/websocket"]="backend-websocket:latest"
+  ["backend/alerts"]="backend-alerts:latest"
+  ["backend/gateways/t301-tracking"]="gateway-t301:latest"
+  ["backend/gateways/goodwe-sems"]="gateway-goodwe:latest"
+  ["backend/ia/openai-proxy"]="openai-proxy:latest"
 )
 
-echo "🔧 Iniciando construcción de imágenes Docker para microservicios backend..."
+echo "🔧 Iniciando construcción de imágenes Docker para todos los servicios..."
 
-for SERVICE in "${!SERVICES[@]}"; do
-  DIR="$BASE_DIR/$SERVICE"
-  IMAGE="${SERVICES[$SERVICE]}"
+for REL_DIR in "${!SERVICES[@]}"; do
+  DIR="$BASE_DIR/$REL_DIR"
+  IMAGE="${SERVICES[$REL_DIR]}"
 
-  echo "📦 Construyendo $SERVICE → imagen: $IMAGE"
+  echo "📦 Construyendo $REL_DIR → imagen: $IMAGE"
 
   if [ ! -d "$DIR" ]; then
     echo "❌ ERROR: Carpeta no encontrada: $DIR"
@@ -38,5 +45,5 @@ for SERVICE in "${!SERVICES[@]}"; do
   echo ""
 done
 
-echo "🎉 Todas las imágenes del backend han sido construidas correctamente."
+echo "🎉 Todas las imágenes han sido construidas correctamente."
 
