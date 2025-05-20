@@ -51,6 +51,11 @@ copy_if_exists "$SRC_DIR/passbolt-rustdesk.yaml" "$DST_DIR/tools/"
 echo "📦 Copiando ingress..."
 copy_if_exists "$SRC_DIR/ingress.yaml" "$DST_DIR/ingress/"
 
+echo "📦 Copiando bases de datos..."
+copy_if_exists "$SRC_DIR/redis.yaml" "$DST_DIR/databases/"
+copy_if_exists "$SRC_DIR/postgresql.yaml" "$DST_DIR/databases/"
+copy_if_exists "$SRC_DIR/mongodb.yaml" "$DST_DIR/databases/"
+
 echo "📦 Copiando stack consolidado si existe..."
 if [ -f "$SRC_DIR/K8s-deploy-stack.yaml" ]; then
   cp "$SRC_DIR/K8s-deploy-stack.yaml" "$DST_DIR/"
