@@ -16,6 +16,7 @@ spec:
       containers:
         - name: api-rest
           image: backend-api:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
           env:

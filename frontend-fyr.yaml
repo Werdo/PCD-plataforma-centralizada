@@ -16,6 +16,7 @@ spec:
       containers:
         - name: frontend-fyr
           image: frontend-fyr:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
 ---
