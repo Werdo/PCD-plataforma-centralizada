@@ -16,6 +16,7 @@ spec:
       containers:
         - name: alerts
           image: backend-alerts:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3001
           env:

@@ -118,6 +118,9 @@ http://rustdesk.emiliomoro.local  → RustDesk Web
 ## 🧼 Tips y recomendaciones
 - Reinicia sesión tras ejecutar `01-bootstrap.sh`
 - Si ves `ImagePullBackOff`, ejecuta `07-import-images.sh`
+- Comprueba que en tus YAML se indique `imagePullPolicy: IfNotPresent` para los
+  contenedores locales, evitando que Kubernetes intente descargar desde Docker
+  Hub en cada despliegue.
 - Usa `11-cluster-admin.sh` como panel de control principal
 - Personaliza los valores de entorno (`.env`, variables) según tu infraestructura
 

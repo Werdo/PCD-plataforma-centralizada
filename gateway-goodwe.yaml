@@ -16,6 +16,7 @@ spec:
       containers:
         - name: gateway-goodwe
           image: gateway-goodwe:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8001
           env:

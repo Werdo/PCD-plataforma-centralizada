@@ -16,6 +16,7 @@ spec:
       containers:
         - name: gateway-t301
           image: gateway-t301:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9988
           env:
