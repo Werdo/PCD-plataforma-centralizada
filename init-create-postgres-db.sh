@@ -15,13 +15,15 @@ if [ -z "$POD" ]; then
 fi
 
 echo "🔍 Verificando existencia de la base de datos '$DB_NAME'..."
-DB_EXISTS=$(kubectl exec -n $NAMESPACE "$POD" -- bash -c "psql -U \"$POSTGRES_USER\" -tAc \"SELECT 1 FROM pg_database WHERE datname = '$DB_NAME';\"")
+DB_EXISTS=$(kubectl exec -n "$NAMESPACE" "$POD" -- \
+  env DB_NAME="$DB_NAME" bash -c 'psql -U "$POSTGRES_USER" -tAc "SELECT 1 FROM pg_database WHERE datname = '\''$DB_NAME'\'';"')
 
 if [ "$DB_EXISTS" = "1" ]; then
   echo "✅ La base de datos '$DB_NAME' ya existe."
 else
   echo "🆕 Creando base de datos '$DB_NAME'..."
-  kubectl exec -n $NAMESPACE "$POD" -- bash -c "psql -U \"$POSTGRES_USER\" -c \"CREATE DATABASE $DB_NAME;\""
+  kubectl exec -n "$NAMESPACE" "$POD" -- \
+    env DB_NAME="$DB_NAME" bash -c 'psql -U "$POSTGRES_USER" -c "CREATE DATABASE \"$DB_NAME\";"'
   echo "✅ Base de datos '$DB_NAME' creada."
 fi
 
