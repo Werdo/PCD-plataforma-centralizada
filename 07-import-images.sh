@@ -22,8 +22,13 @@ mkdir -p "$TMP_DIR"
 echo "📦 Exportando imágenes locales desde Docker..."
 for IMAGE in "${IMAGES[@]}"; do
   FILE="$TMP_DIR/$(echo "$IMAGE" | tr '/:' '_').tar"
-  echo "  - Guardando $IMAGE → $FILE"
-  docker save "$IMAGE" -o "$FILE"
+  if docker image inspect "$IMAGE" >/dev/null 2>&1; then
+    echo "  - Guardando $IMAGE → $FILE"
+    docker save "$IMAGE" -o "$FILE"
+  else
+    echo "  - Imagen no encontrada: $IMAGE, se omite."
+    continue
+  fi
 done
 
 echo "📥 Importando imágenes en containerd (K3s)..."
