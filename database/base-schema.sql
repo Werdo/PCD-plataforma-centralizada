@@ -1,6 +1,30 @@
 -- base-schema.sql - Carga inicial de toda la estructura
 
+\i /home/ppelaez/scripts/database/locations.sql
+\i /home/ppelaez/scripts/database/rooms.sql
+\i /home/ppelaez/scripts/database/barrels.sql
 \i /home/ppelaez/scripts/database/devices.sql
-\i /home/ppelaez/scripts/database/t301_events.sql
+\i /home/ppelaez/scripts/database/sensors.sql
+\i /home/ppelaez/scripts/database/plots.sql
+\i /home/ppelaez/scripts/database/grids.sql
+\i /home/ppelaez/scripts/database/field_sensors.sql
+\i /home/ppelaez/scripts/database/production_processes.sql
+\i /home/ppelaez/scripts/database/fermentation_values.sql
+\i /home/ppelaez/scripts/database/traceability.sql
+\i /home/ppelaez/scripts/database/barrel_locations.sql
+\i /home/ppelaez/scripts/database/states.sql
+\i /home/ppelaez/scripts/database/type_catalog.sql
+\i /home/ppelaez/scripts/database/wine_types.sql
+\i /home/ppelaez/scripts/database/vintages.sql
+\i /home/ppelaez/scripts/database/grape_types.sql
+\i /home/ppelaez/scripts/database/grape_organoleptic.sql
+\i /home/ppelaez/scripts/database/wine_organoleptic.sql
+\i /home/ppelaez/scripts/database/configurations.sql
+\i /home/ppelaez/scripts/database/roles.sql
+\i /home/ppelaez/scripts/database/groups.sql
 \i /home/ppelaez/scripts/database/users.sql
+\i /home/ppelaez/scripts/database/user_role_group.sql
+\i /home/ppelaez/scripts/database/areas.sql
+\i /home/ppelaez/scripts/database/system_views.sql
+\i /home/ppelaez/scripts/database/t301_events.sql
 \i /home/ppelaez/scripts/database/dashboards.sql

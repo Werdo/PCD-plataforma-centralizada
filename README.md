@@ -57,30 +57,36 @@ Este sistema permite desplegar una plataforma compuesta por microservicios backe
 ```
 > Copia los YAML a sus rutas correspondientes dentro de `k8s/`.
 
-### 4. ⚙️ Preparación de servicios
+### 4. 🗄️ Preparar base de datos
+```bash
+./scripts/00-prepare-database.sh
+```
+> Crea `centraldb` y carga el esquema con `init-create-postgres-db.sh` e `init-postgres-schema.sh`. El script `init-mongodb-schema.sh` es opcional.
+
+### 5. ⚙️ Preparación de servicios
 ```bash
 ./scripts/04-prepare-facit.sh
 ./scripts/05-prepare-fyr.sh
 ./scripts/06-build-backend.sh
 ```
 
-### 5. 🐳 Importación de imágenes a containerd (K3s)
+### 6. 🐳 Importación de imágenes a containerd (K3s)
 ```bash
 ./scripts/07-import-images.sh
 ```
 
-### 6. 🚀 Despliegue de toda la plataforma
+### 7. 🚀 Despliegue de toda la plataforma
 ```bash
 ./scripts/08-deploy-full-stack.sh
 ```
 
-### 7. ✅ Verificación
+### 8. ✅ Verificación
 ```bash
 ./scripts/09-check-status.sh
 ./scripts/10-health-dashboard.sh
 ```
 
-### 8. 🛠 Despliegue de herramientas internas (Passbolt + RustDesk)
+### 9. 🛠 Despliegue de herramientas internas (Passbolt + RustDesk)
 ```bash
 ./scripts/12-deploy-tools.sh
 ```
@@ -118,6 +124,9 @@ http://rustdesk.emiliomoro.local  → RustDesk Web
 ## 🧼 Tips y recomendaciones
 - Reinicia sesión tras ejecutar `01-bootstrap.sh`
 - Si ves `ImagePullBackOff`, ejecuta `07-import-images.sh`
+- Comprueba que en tus YAML se indique `imagePullPolicy: IfNotPresent` para los
+  contenedores locales, evitando que Kubernetes intente descargar desde Docker
+  Hub en cada despliegue.
 - Usa `11-cluster-admin.sh` como panel de control principal
 - Personaliza los valores de entorno (`.env`, variables) según tu infraestructura
 
@@ -208,30 +217,33 @@ Cada microservicio tiene su `main.py`, `Dockerfile`, `requirements.txt` y manifi
 # 3. Sincronizar manifiestos de Kubernetes
 ./scripts/03-sync-manifests.sh
 
-# 4. Copiar los archivos backend al sitio final
+# 4. Preparar base de datos
+./scripts/00-prepare-database.sh
+
+# 5. Copiar los archivos backend al sitio final
 ./scripts/04-setup-backend-files.sh
 
-# 5. Preparar frontends
+# 6. Preparar frontends
 ./scripts/04-prepare-facit.sh
 ./scripts/05-prepare-fyr.sh
 
-# 6. Construir backend desde carpetas definitivas
+# 7. Construir backend desde carpetas definitivas
 ./scripts/06-build-backend.sh
 
-# 7. Importar imágenes construidas en K3s
+# 8. Importar imágenes construidas en K3s
 ./scripts/07-import-images.sh
 
-# 8. Desplegar servicios principales (frontend, backend, DBs, Ingress)
+# 9. Desplegar servicios principales (frontend, backend, DBs, Ingress)
 ./scripts/08-deploy-full-stack.sh
 
-# 9. Verificar estado general
+# 10. Verificar estado general
 ./scripts/09-check-status.sh
 ./scripts/10-health-dashboard.sh
 
-# 10. Desplegar servicios internos (Passbolt + RustDesk)
+# 11. Desplegar servicios internos (Passbolt + RustDesk)
 ./scripts/12-deploy-tools.sh
 
-# 11. Desplegar gateways o IA según necesidad
+# 12. Desplegar gateways o IA según necesidad
 ./scripts/13-deploy-gateway-t301.sh
 ./scripts/14-deploy-gateway-goodwe.sh
 ./scripts/15-deploy-openai-proxy.sh

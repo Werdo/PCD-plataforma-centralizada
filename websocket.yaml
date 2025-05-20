@@ -16,6 +16,7 @@ spec:
       containers:
         - name: websocket
           image: backend-websocket:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
           env:
