@@ -24,14 +24,20 @@ if [ ! -f "$STACK_FILE" ]; then
   exit 1
 fi
 
-# Validar que los deployments existen (asumimos que se aplicaron antes con 03)
+# Validar que los deployments existen.
+# Si falta alguno, ejecutamos el sincronizado de manifiestos para crearlos.
+MISSING=0
 for DEP in "${DEPLOYMENTS[@]}"; do
   if ! kubectl get deployment "$DEP" -n "$NAMESPACE" >/dev/null 2>&1; then
-    echo "❌ ERROR: No se encontró el deployment $DEP en el namespace $NAMESPACE"
-    echo "ℹ️ Ejecuta ./scripts/03-sync-manifests.sh para aplicar los manifiestos individuales."
-    exit 1
+    echo "⚠️  Deployment $DEP no encontrado. Se sincronizarán los manifiestos."
+    MISSING=1
   fi
 done
+
+if [ "$MISSING" -eq 1 ]; then
+  SCRIPT_DIR="$(dirname "$0")"
+  bash "$SCRIPT_DIR/03-sync-manifests.sh"
+fi
 
 echo "🚀 Despliegue completo de la plataforma centralizada"
 echo "📦 Aplicando stack..."
