@@ -24,43 +24,56 @@ if [ ! -f "$STACK_FILE" ]; then
   exit 1
 fi
 
-# Validar que los deployments existen (asumimos que se aplicaron antes con 03)
+# Validar que los deployments existen.
+# Si falta alguno, ejecutamos el sincronizado de manifiestos para crearlos.
+MISSING=0
 for DEP in "${DEPLOYMENTS[@]}"; do
   if ! kubectl get deployment "$DEP" -n "$NAMESPACE" >/dev/null 2>&1; then
-    echo "❌ ERROR: No se encontró el deployment $DEP en el namespace $NAMESPACE"
-    echo "ℹ️ Ejecuta ./scripts/03-sync-manifests.sh para aplicar los manifiestos individuales."
-    exit 1
+    echo "⚠️  Deployment $DEP no encontrado. Se sincronizarán los manifiestos."
+    MISSING=1
   fi
 done
+
+if [ "$MISSING" -eq 1 ]; then
+  SCRIPT_DIR="$(dirname "$0")"
+  bash "$SCRIPT_DIR/03-sync-manifests.sh"
+fi
 
 echo "🚀 Despliegue completo de la plataforma centralizada"
 echo "📦 Aplicando stack..."
 kubectl apply -f "$STACK_FILE"
 
 echo "⏳ Esperando disponibilidad de los servicios..."
+FAIL=0
 for DEP in "${DEPLOYMENTS[@]}"; do
   echo "⌛ Esperando: $DEP"
   if kubectl rollout status deployment "$DEP" -n "$NAMESPACE" --timeout=180s; then
     echo "✅ $DEP desplegado correctamente"
   else
     echo "⚠️  $DEP no listo a tiempo"
+    FAIL=1
   fi
   echo ""
 done
 
-# Obtener IP pública externa
-IP=$(curl -s ifconfig.me)
-if [[ -z "$IP" ]]; then
-  IP=$(hostname -I | awk '{print $1}')
-  echo "⚠️ No se pudo obtener IP pública. Usando IP local: $IP"
-else
-  echo "🌐 IP pública detectada: $IP"
-fi
+if [ "$FAIL" -eq 0 ]; then
+  # Obtener IP pública externa
+  IP=$(curl -s ifconfig.me)
+  if [[ -z "$IP" ]]; then
+    IP=$(hostname -I | awk '{print $1}')
+    echo "⚠️ No se pudo obtener IP pública. Usando IP local: $IP"
+  else
+    echo "🌐 IP pública detectada: $IP"
+  fi
 
-# Mostrar accesos principales
-echo "✅ Despliegue completado. Accesos disponibles:"
-echo "   http://$IP:30080/admin     → Facit (admin)"
-echo "   http://$IP:30080/app       → Fyr (IA pública)"
-echo "   http://$IP:30080/api       → API REST"
-echo "   ws://$IP:30080/ws          → WebSocket backend"
+  # Mostrar accesos principales
+  echo "✅ Despliegue completado. Accesos disponibles:"
+  echo "   http://$IP:30080/admin     → Facit (admin)"
+  echo "   http://$IP:30080/app       → Fyr (IA pública)"
+  echo "   http://$IP:30080/api       → API REST"
+  echo "   ws://$IP:30080/ws          → WebSocket backend"
+else
+  echo "❌ Algunos despliegues no están listos. Revisa con kubectl get pods -n $NAMESPACE"
+  exit 1
+fi
 
